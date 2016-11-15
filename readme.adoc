@@ -100,11 +100,13 @@ Learn more about StAX https://docs.oracle.com/cd/E17802_01/webservices/webservic
 </bean>
 ----
 Next the fragment of XML document is parsed using JAXB marshaller to java object(Model - Student), which is then pased to item processor.
+
 === Item Processor
 Optional ItemProcessor to perform business logic/filtering on the input records. In this project, we are filtering students having less than 60%.
 ----
 <bean id="itemProcessor" class="com.sahoo.spring.batch.standalone.example.batch.StudentItemProcessor" />
 ----
+
 === Item Writer
 In this example project, we have used `JdbcBatchItemWriter` to execute a batch of statements for all items.
 ----
@@ -124,7 +126,7 @@ In this example project, we have used `JdbcBatchItemWriter` to execute a batch o
 	</property>
 </bean>
 ----
-`JdbcBatchItemWriter` need an SQL query and a special callback in the form of `ItemPreparedStatementSetter`. We need a custom setter to handle the conversion between Jodatime LocalDate and MySQL DATE.
+`JdbcBatchItemWriter` need an SQL query and a special callback in the form of `ItemPreparedStatementSetter`. We need a custom setter which implements `ItemPreparedStatementSetter` to handle the conversion between Jodatime LocalDate and MySQL DATE.
 
 == Running the application
 
@@ -148,6 +150,7 @@ You will see the following console output after successful run:
 Job Exit Status : COMPLETED
 ----
 And finally, check the STUDENTS_RESULT in mysql DB.
+
 image::/images/Batch_Result.png[]
 
 Records are saved in DB, you can see the students having less than 75% are missing which are filtered in procesor.
