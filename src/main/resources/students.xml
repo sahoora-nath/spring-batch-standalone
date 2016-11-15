@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StudentsList>
+    <Student>
+        <dob>1995-11-01</dob>
+        <percentage>56.0</percentage>
+        <studentName>John Smith</studentName>
+    </Student>
+    <Student>
+        <dob>1979-07-01</dob>
+        <percentage>89.0</percentage>
+        <studentName>Peter Fry</studentName>
+    </Student>
+    <Student>
+        <dob>1999-02-01</dob>
+        <percentage>77.0</percentage>
+        <studentName>Rita Paul</studentName>
+    </Student>
+    <Student>
+        <dob>1965-02-01</dob>
+        <percentage>83.0</percentage>
+        <studentName>sahoora</studentName>
+    </Student>
+</StudentsList>
