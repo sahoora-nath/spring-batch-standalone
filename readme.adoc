@@ -46,7 +46,7 @@ For this example, we will be using mysql community edition server or embedded de
 In the db shell, run these following commands:
 [source,sql]
 ----
-	CREATE TABLE STUDENTS_RESULT (
+CREATE TABLE STUDENTS_RESULT (
       id INT(12) NOT NULL auto_increment primary key,
       last_updated_date datetime,      
       student_name VARCHAR(30) NOT NULL,
@@ -57,7 +57,7 @@ In the db shell, run these following commands:
 To be sure the tables got created successfully, run one more command:
 [source,sql]
 ----
-select *  from STUDENTS_RESULT;
+select * from STUDENTS_RESULT;
 ----
 
 === Running the application
@@ -82,6 +82,6 @@ You will see the following console output after successful run:
 Job Exit Status : COMPLETED
 ----
 And finally, check the STUDENTS_RESULT in mysql DB.
-image::images/Batch_Result.png[]
+image::images/Batch_Result.png
 
 Records are saved in DB, you can see the students having less than 75% are missing which are filtered in procesor.
