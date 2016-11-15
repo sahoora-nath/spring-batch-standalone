@@ -11,14 +11,14 @@ toc::[]
 == Goals
 
 * Using the `spring-batch` as standalone application.
-* Use of StAX Reader to a read chunk of XML file and process the date and finally putting into mySQL DB.
+* Use of StAX Reader to a read block of XML file and process the data and inserting into mySQL DB.
 * This is useful while processing large XML files.
 * The commit interval and failure scenario can be handled with the leverage of spring batch.
 
 == Overview
 
 This spring-batch demo will demonstrate how the API can be used to process bulk data in controlled way.
-These services can be extended to put the failed chunk in a separate file.
+These services can be extended to put the failed blocks in a separate file.
 
 == Prerequisites
 
@@ -30,7 +30,7 @@ These services can be extended to put the failed chunk in a separate file.
 . Open a Windows or Unix terminal.
 . Using the `git` utility, clone this project to your local workstation.
 +
-NOTE: For the purposes of these lab instructions, the directory of this cloned project on your local workstation will be referred to as: `$DEMO_DIR`.
+NOTE: For the purposes of these lab instructions, the directory of this cloned project on your local workstation will be referred as: `$DEMO_DIR`.
 . Change directory into: `$DEMO_DIR` and build the maven project:
 +
 ----
@@ -40,9 +40,9 @@ mvn clean install
 
 === Setting up the database server
 
-For this example, we will be using mysql community edition server or embedded derby server. Before installing the demo, we need to setup the server and create the database tables.
+For this example, we will be using mysql community edition server. Before installing the demo, we need to setup the server and create the database tables.
 
-. Create the database tables.
+. To create database tables.
 In the db shell, run these following commands:
 [source,sql]
 ----
@@ -77,7 +77,7 @@ You will see the following console output after successful run:
 2016-11-15 15:32:24 INFO  StudentJobListener:18 - Job starts at :2016-11-15T15:32:24.797
 2016-11-15 15:32:24 INFO  SimpleStepHandler:146 - Executing step: [step1]
 2016-11-15 15:32:25 INFO  StudentJobListener:24 - Job stops at : 2016-11-15T15:32:25.266
-2016-11-15 15:32:25 INFO  StudentJobListener:25 - Total time take in millis : 0
+2016-11-15 15:32:25 INFO  StudentJobListener:25 - Total time take in millis : 10
 2016-11-15 15:32:25 INFO  SimpleJobLauncher:136 - Job: [FlowJob: [name=studentsJob]] completed with the following parameters: [{}] and the following status: [COMPLETED]
 Job Exit Status : COMPLETED
 ----
