@@ -1,0 +1,87 @@
+:sectanchors:
+:toc: macro
+:toclevels: 2
+:toc-title: Table of Content
+:numbered:
+
+= Spring Batch Standalone Application
+
+toc::[]
+
+== Goals
+
+* Using the `spring-batch` as standalone application.
+* Use of StAX Reader to a read chunk of XML file and process the date and finally putting into mySQL DB.
+* This is useful while processing large XML files.
+* The commit interval and failure scenario can be handled with the leverage of spring batch.
+
+== Overview
+
+This spring-batch demo will demonstrate how the API can be used to process bulk data in controlled way.
+These services can be extended to put the failed chunk in a separate file.
+
+== Prerequisites
+
+- JDK 1.8
+- Apache Maven 3.2.3
+
+=== Compile Project
+
+. Open a Windows or Unix terminal.
+. Using the `git` utility, clone this project to your local workstation.
++
+NOTE: For the purposes of these lab instructions, the directory of this cloned project on your local workstation will be referred to as: `$DEMO_DIR`.
+. Change directory into: `$DEMO_DIR` and build the maven project:
++
+----
+cd spring-batch-standalone
+mvn clean install
+----
+
+=== Setting up the database server
+
+For this example, we will be using mysql community edition server or embedded derby server. Before installing the demo, we need to setup the server and create the database tables.
+
+. Create the database tables.
+In the db shell, run these following commands:
+[source,sql]
+----
+	CREATE TABLE STUDENTS_RESULT (
+      id INT(12) NOT NULL auto_increment primary key,
+      last_updated_date datetime,      
+      student_name VARCHAR(30) NOT NULL,
+      dob DATE NOT NULL,
+      percentage  double NOT NULL
+    );
+----
+To be sure the tables got created successfully, run one more command:
+[source,sql]
+----
+select *  from STUDENTS_RESULT;
+----
+
+=== Running the application
+
+You can execute the application using maven command or run as Java Application from IDE.
+
+invoking `mvn exec:java` on the command line will invoke the plugin which is configured to execute the class `com.sahoo.spring.batch.standalone.example.App`
+
+You will see the following console output after successful run:
+----
+2016-11-15 15:32:24 INFO  XmlBeanDefinitionReader:317 - Loading XML bean definitions from class path resource [batch-context.xml]
+2016-11-15 15:32:24 INFO  XmlBeanDefinitionReader:317 - Loading XML bean definitions from class path resource [datasource.xml]
+2016-11-15 15:32:24 INFO  DriverManagerDataSource:133 - Loaded JDBC driver: com.mysql.jdbc.Driver
+2016-11-15 15:32:24 INFO  SimpleJobLauncher:195 - No TaskExecutor has been set, defaulting to synchronous executor.
+2016-11-15 15:32:24 INFO  Jaxb2Marshaller:518 - Creating JAXBContext with classes to be bound [class com.sahoo.spring.batch.standalone.example.model.Student]
+2016-11-15 15:32:24 INFO  SimpleJobLauncher:133 - Job: [FlowJob: [name=studentsJob]] launched with the following parameters: [{}]
+2016-11-15 15:32:24 INFO  StudentJobListener:18 - Job starts at :2016-11-15T15:32:24.797
+2016-11-15 15:32:24 INFO  SimpleStepHandler:146 - Executing step: [step1]
+2016-11-15 15:32:25 INFO  StudentJobListener:24 - Job stops at : 2016-11-15T15:32:25.266
+2016-11-15 15:32:25 INFO  StudentJobListener:25 - Total time take in millis : 0
+2016-11-15 15:32:25 INFO  SimpleJobLauncher:136 - Job: [FlowJob: [name=studentsJob]] completed with the following parameters: [{}] and the following status: [COMPLETED]
+Job Exit Status : COMPLETED
+----
+And finally, check the STUDENTS_RESULT in mysql DB.
+image::images/Batch_Result.png[]
+
+Records are saved in DB, you can see the students having less than 75% are missing which are filtered in procesor.
