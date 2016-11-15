@@ -18,7 +18,7 @@ public class StudentItemProcessor implements ItemProcessor<Student, Student> {
          * Only return students which are equal or more than 60%
          *
          */
-        if(student.getPercentage() < 75){
+        if(student.getPercentage() < 60){
             return null;
         }
  

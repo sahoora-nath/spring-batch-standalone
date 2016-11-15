@@ -25,6 +25,7 @@ These services can be extended to put the failed blocks in a separate file.
 - JDK 1.8
 - Apache Maven 3.2.3
 
+== Project Setup
 === Compile Project
 
 . Open a Windows or Unix terminal.
@@ -59,8 +60,73 @@ To be sure the tables got created successfully, run one more command:
 ----
 select * from STUDENTS_RESULT;
 ----
+== Configuring Batch Steps
+Spring batch uses a `chunk oriented` processing which refers to reading the data one at a time, and creating `chunks` that will be written out, with in a transaction boundary. One item is read in from an `ItemReader`, handed to an `ItemProcessor`, and aggregated. Once the number of items read equals the commit interval, the entire chunk is written out via the `ItemWriter`, and then the transaction is committed.
 
-=== Running the application
+![Image of chunk-oriented-processing](https://github.com/sahoora-nath/spring-batch-standalone/tree/master/images/chunk-oriented-processing.png)
+
+=== Configuring a Step
+
+![Image of configuring-a-step](https://github.com/sahoora-nath/spring-batch-standalone/tree/master/images/configuring-a-step.png)
+
+The configuration above represents the only required dependencies to create a item-oriented step:
+
+* reader - The `ItemReader` that provides items for processing.
+* writer - The `ItemWriter` that processes the items provided by the `ItemReader`.
+* transaction-manager - Spring's `PlatformTransactionManager` that will be used to begin and commit transactions during processing.
+* job-repository - The `JobRepository` that will be used to periodically store the `StepExecution` and `ExecutionContext` during processing (just before committing). 
+* commit-interval - The number of items that will be processed before the `transaction` is committed.
+
+It should be noted that, job-repository defaults to `jobRepository` and transaction-manager defaults to `transactionManger`. Furthermore, the ItemProcessor is optional, not required, since the item could be directly passed from the reader to the writer.
+
+=== ItemReader
+Item reader for reading XML input based on StAX is `StaxEventItemReader`
+It extracts `fragments` from the input XML document which correspond to records for processing. The `fragments` are wrapped with `StartDocument` and `EndDocument` events so that the fragments can be further processed like standalone XML documents.
+
+Learn more about StAX https://docs.oracle.com/cd/E17802_01/webservices/webservices/docs/1.6/tutorial/doc/SJSXP2.html
+----
+	<bean id="xmlItemReader" class="org.springframework.batch.item.xml.StaxEventItemReader"> 
+        <property name="resource" value="classpath:students.xml" /> 
+        <property name="fragmentRootElementName" value="Student" /> 
+        <property name="unmarshaller">
+            <bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+                <property name="classesToBeBound">
+                    <list>
+                        <value>com.sahoo.spring.batch.standalone.example.model.Student</value>
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
+----
+Next the fragment of XML document is parsed using JAXB marshaller to java object(Model - Student), which is then pased to item processor.
+=== Item Processor
+Optional ItemProcessor to perform business logic/filtering on the input records. In this project, we are filtering students having less than 60%.
+----
+<bean id="itemProcessor" class="com.sahoo.spring.batch.standalone.example.batch.StudentItemProcessor" />
+----
+=== Item Writer
+In this example project, we have used `JdbcBatchItemWriter` to execute a batch of statements for all items.
+----
+<bean id="databaseItemWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sql">
+            <value>
+                <![CDATA[        
+                    insert into STUDENTS_RESULT(LAST_UPDATED_DATE, STUDENT_NAME, DOB, PERCENTAGE) 
+                    values (NOW(), ?, ?, ?)
+                ]]>
+            </value>
+        </property>
+ 
+        <property name="ItemPreparedStatementSetter">
+            <bean class="com.sahoo.spring.batch.standalone.example.batch.StudentItemPreparedStatementSetter" />
+        </property>
+</bean>
+----
+`JdbcBatchItemWriter` need an SQL query and a special callback in the form of `ItemPreparedStatementSetter`. We need a custom setter to handle the conversion between Jodatime LocalDate and MySQL DATE.
+
+== Running the application
 
 You can execute the application using maven command or run as Java Application from IDE.
 
@@ -82,6 +148,6 @@ You will see the following console output after successful run:
 Job Exit Status : COMPLETED
 ----
 And finally, check the STUDENTS_RESULT in mysql DB.
-![alt tag](https://github.com/sahoora-nath/spring-batch-standalone/tree/master/images/Batch_Result.png)
+![Image of db-output](https://github.com/sahoora-nath/spring-batch-standalone/tree/master/images/Batch_Result.png)
 
 Records are saved in DB, you can see the students having less than 75% are missing which are filtered in procesor.
