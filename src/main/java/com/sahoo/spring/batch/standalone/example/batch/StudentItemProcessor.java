@@ -1,5 +1,7 @@
 package com.sahoo.spring.batch.standalone.example.batch;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 
 import com.sahoo.spring.batch.standalone.example.model.Student;
@@ -12,6 +14,7 @@ import com.sahoo.spring.batch.standalone.example.model.Student;
  */
 public class StudentItemProcessor implements ItemProcessor<Student, Student> {
 
+	final static Logger logger = LoggerFactory.getLogger(StudentItemProcessor.class);
 	@Override
 	public Student process(Student student) throws Exception {
 		/*
@@ -21,8 +24,7 @@ public class StudentItemProcessor implements ItemProcessor<Student, Student> {
         if(student.getPercentage() < 60){
             return null;
         }
- 
+        logger.info("processing student {} ", student.getStudentName());
         return student;
 	}
-
 }

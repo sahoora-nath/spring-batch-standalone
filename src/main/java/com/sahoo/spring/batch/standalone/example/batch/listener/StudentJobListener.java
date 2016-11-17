@@ -1,4 +1,4 @@
-package com.sahoo.spring.batch.standalone.example.batch;
+package com.sahoo.spring.batch.standalone.example.batch.listener;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

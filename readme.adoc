@@ -24,16 +24,14 @@ These services can be extended to put the failed blocks in a separate file.
 
 - JDK 1.8
 - Apache Maven 3.2.3
+- MySQL community edition server
 
 == Project Setup
 === Compile Project
 
 . Open a Windows or Unix terminal.
 . Using the `git` utility, clone this project to your local workstation.
-+
-NOTE: For the purposes of these lab instructions, the directory of this cloned project on your local workstation will be referred as: `$DEMO_DIR`.
-. Change directory into: `$DEMO_DIR` and build the maven project:
-+
+
 ----
 cd spring-batch-standalone
 mvn clean install
@@ -60,6 +58,15 @@ To be sure the tables got created successfully, run one more command:
 ----
 select * from STUDENTS_RESULT;
 ----
+
+== Usecase
+Clinet/Business wants to migrate data from a source to SQL DB. But the data is available as XML which needs to be procesed into MySQL DB.
+The below diagram explains the usecase.
+
+image::/images/flow-diagram.png[]
+
+For tracking purpose the success/failure processed entry must be written into different files. 
+
 == Configuring Batch Steps
 Spring batch uses a `chunk oriented` processing which refers to reading the data one at a time, and creating `chunks` that will be written out, with in a transaction boundary. One item is read in from an `ItemReader`, handed to an `ItemProcessor`, and aggregated. Once the number of items read equals the commit interval, the entire chunk is written out via the `ItemWriter`, and then the transaction is committed.
 
@@ -154,3 +161,49 @@ And finally, check the STUDENTS_RESULT in mysql DB.
 image::/images/Batch_Result.png[]
 
 Records are saved in DB, you can see the students having less than 75% are missing which are filtered in procesor.
+
+== Handling Failure Scenario
+There are many scenarios where errors encountered while processing should not result in Step failure or transaction rollback, but should be handled instead.
+
+=== Configuring Skip Logic
+
+Errors encountered while processing a `step` can be skipped by configuring the exception details in batch steps. In our example project there might me some errors while reading XML file or marshlling the XML document into JAXB object because of `Invalid Character` found. The possible exception could be `org.springframework.oxm.XmlMappingException` or `javax.xml.bind.JAXBException`.
+
+----
+<batch:job id="studentsJob" restartable="true">
+	<batch:step id="step1">
+		<batch:tasklet transaction-manager="transactionManager">                
+			
+			<batch:chunk reader="xmlItemReader" writer="databaseItemWriter"
+				processor="itemProcessor" commit-interval="1" *skip-limit="2">
+				 <batch:streams>
+					<batch:stream ref="errorItemWriter"/>
+					<batch:stream ref="successItemWriter"/>
+				 </batch:streams>
+				 <batch:skippable-exception-classes>
+					<batch:include class="java.lang.Exception"/>
+					<batch:exclude class="java.io.FileNotFoundException"/>
+				 </batch:skippable-exception-classes>
+				 <batch:listeners>
+					<batch:listener ref="skipListener" />
+					<batch:listener ref="writeListener" />
+				</batch:listeners>
+			</batch:chunk>
+			*
+		</batch:tasklet>
+	</batch:step>
+	<batch:listeners>
+		<batch:listener ref="jobListener" />
+	</batch:listeners>
+</batch:job>
+----
+The section marked in bold is added to handle the skip logic. There is a skip-limit attribute (value as number) which is checked on every skippable exception, and when the number is reached, the step fails.
++
+NOTE: The batch:streams, batch:listeners and batch:skippable-exception-classes configuration elements are all related to the way that erroneous input records are handled.
++
+
+== Controlling Rollback
+coming soon
+
+== Unit Testing
+coming soon

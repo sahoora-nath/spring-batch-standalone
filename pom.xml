@@ -95,6 +95,7 @@
 				<version>1.5.0</version>
 				<configuration>
 					<mainClass>com.sahoo.spring.batch.standalone.example.App</mainClass>
+					<cleanupDaemonThreads>false</cleanupDaemonThreads>
 				</configuration>
 			</plugin>
 
