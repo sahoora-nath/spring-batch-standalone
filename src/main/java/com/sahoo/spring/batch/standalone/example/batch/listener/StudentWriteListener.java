@@ -24,15 +24,18 @@ public class StudentWriteListener<T> implements ItemWriteListener<Student> {
 		try {
 			successItemWriter.write(items);
 		} catch (XmlMappingException e) {
+			logger.error("StudentWriteListener: XmlMappingException - "+ e.getMessage());
 			logger.error(e.getMessage(), e);
 		} catch (Exception e) {
+			logger.error("StudentWriteListener: Exception - "+ e.getMessage());
 			logger.error(e.getMessage(), e);
 		}
 	}
 
 	@Override
 	public void onWriteError(Exception exception, List<? extends Student> items) {
-		// TODO Auto-generated method stub
+		logger.error("StudentWriteListener: onWriteError - "+ exception.getMessage());
+		logger.error(items.toString());
 	}
 
 	public StaxEventItemWriter<Student> getSuccessItemWriter() {

@@ -1,0 +1,41 @@
+2016-11-18 22:05:05 INFO  DefaultTestContextBootstrapper:260 - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
+2016-11-18 22:05:06 INFO  DefaultTestContextBootstrapper:209 - Could not instantiate TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener]. Specify custom listener classes or make the default listener classes (and their required dependencies) available. Offending class: [javax/servlet/ServletContext]
+2016-11-18 22:05:06 INFO  DefaultTestContextBootstrapper:187 - Using TestExecutionListeners: [org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@7e0b0338, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@617faa95, org.springframework.test.context.support.DirtiesContextTestExecutionListener@1e127982, org.springframework.test.context.transaction.TransactionalTestExecutionListener@60c6f5b, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@2038ae61]
+2016-11-18 22:05:06 INFO  XmlBeanDefinitionReader:317 - Loading XML bean definitions from class path resource [batch-context.xml]
+2016-11-18 22:05:06 INFO  XmlBeanDefinitionReader:317 - Loading XML bean definitions from class path resource [datasource.xml]
+2016-11-18 22:05:06 INFO  XmlBeanDefinitionReader:317 - Loading XML bean definitions from class path resource [test-context.xml]
+2016-11-18 22:05:06 INFO  GenericApplicationContext:513 - Refreshing org.springframework.context.support.GenericApplicationContext@551aa95a: startup date [Fri Nov 18 22:05:06 GMT 2016]; root of context hierarchy
+2016-11-18 22:05:06 INFO  DriverManagerDataSource:133 - Loaded JDBC driver: com.mysql.jdbc.Driver
+2016-11-18 22:05:06 INFO  SimpleJobLauncher:195 - No TaskExecutor has been set, defaulting to synchronous executor.
+2016-11-18 22:05:06 INFO  Jaxb2Marshaller:518 - Creating JAXBContext with classes to be bound [class com.sahoo.spring.batch.standalone.example.model.Student]
+2016-11-18 22:05:07 INFO  Jaxb2Marshaller:518 - Creating JAXBContext with classes to be bound [class com.sahoo.spring.batch.standalone.example.model.Student]
+2016-11-18 22:05:07 INFO  Jaxb2Marshaller:518 - Creating JAXBContext with classes to be bound [class com.sahoo.spring.batch.standalone.example.model.Student]
+2016-11-18 22:05:07 INFO  SimpleJobLauncher:133 - Job: [FlowJob: [name=studentsJob]] launched with the following parameters: [{random=290846}]
+2016-11-18 22:05:07 INFO  StudentJobListener:18 - Job starts at :2016-11-18T22:05:07.382
+2016-11-18 22:05:07 INFO  SimpleStepHandler:146 - Executing step: [step1]
+2016-11-18 22:05:07 INFO  StudentItemProcessor:27 - processing student John Smith 
+2016-11-18 22:05:07 INFO  StudentItemProcessor:27 - processing student Peter Fry 
+2016-11-18 22:05:07 INFO  StudentItemProcessor:27 - processing student Rita Paul 
+2016-11-18 22:05:07 INFO  StudentItemProcessor:27 - processing student sahoora 
+2016-11-18 22:05:07 INFO  StudentItemProcessor:27 - processing student Richard A 
+2016-11-18 22:05:08 INFO  StudentItemProcessor:27 - processing student Roddy F 
+2016-11-18 22:05:08 ERROR StudentSkipListener:37 - StudentWriteListener: onWriteError - null
+2016-11-18 22:05:08 ERROR StudentSkipListener:38 - [Student [studentName=Roddy F, dob=null, percentage=80.0]]
+2016-11-18 22:05:08 INFO  StudentItemProcessor:27 - processing student Roddy F 
+2016-11-18 22:05:08 ERROR StudentSkipListener:37 - StudentWriteListener: onWriteError - null
+2016-11-18 22:05:08 ERROR StudentSkipListener:38 - [Student [studentName=Roddy F, dob=null, percentage=80.0]]
+2016-11-18 22:05:08 INFO  StudentSkipListener:25 - StudentSkipListener:onSkipInWrite -> SKIPPED - Roddy F
+2016-11-18 22:05:08 INFO  StudentItemProcessor:27 - processing student Joseph Arul 
+2016-11-18 22:05:08 INFO  StudentItemProcessor:27 - processing student Sanjeev Kumar 
+2016-11-18 22:05:08 ERROR StudentSkipListener:37 - StudentWriteListener: onWriteError - null
+2016-11-18 22:05:08 ERROR StudentSkipListener:38 - [Student [studentName=Sanjeev Kumar, dob=null, percentage=76.0]]
+2016-11-18 22:05:08 INFO  StudentItemProcessor:27 - processing student Sanjeev Kumar 
+2016-11-18 22:05:08 ERROR StudentSkipListener:37 - StudentWriteListener: onWriteError - null
+2016-11-18 22:05:08 ERROR StudentSkipListener:38 - [Student [studentName=Sanjeev Kumar, dob=null, percentage=76.0]]
+2016-11-18 22:05:08 INFO  StudentSkipListener:25 - StudentSkipListener:onSkipInWrite -> SKIPPED - Sanjeev Kumar
+2016-11-18 22:05:08 INFO  StudentItemProcessor:27 - processing student Suresh Natesan 
+2016-11-18 22:05:08 INFO  StudentItemProcessor:27 - processing student Balaji T 
+2016-11-18 22:05:08 INFO  StudentJobListener:24 - Job stops at : 2016-11-18T22:05:08.241
+2016-11-18 22:05:08 INFO  StudentJobListener:25 - Total time take in millis : 859
+2016-11-18 22:05:08 INFO  SimpleJobLauncher:136 - Job: [FlowJob: [name=studentsJob]] completed with the following parameters: [{random=290846}] and the following status: [COMPLETED]
+2016-11-18 22:05:08 INFO  GenericApplicationContext:873 - Closing org.springframework.context.support.GenericApplicationContext@551aa95a: startup date [Fri Nov 18 22:05:06 GMT 2016]; root of context hierarchy

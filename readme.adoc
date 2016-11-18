@@ -198,12 +198,8 @@ Errors encountered while processing a `step` can be skipped by configuring the e
 
 There is a skip-limit attribute (value as number) which is checked on every skippable exception, and when the number is reached, the step fails.
 
+----
 +
-NOTE: The batch:streams, batch:listeners and batch:skippable-exception-classes configuration elements are all related to the way that erroneous input records are handled.
+. NOTE: The batch:streams, batch:listeners and batch:skippable-exception-classes configuration elements are all related to the way that erroneous input records are handled.
 +
-
-== Controlling Rollback
-coming soon
-
-== Unit Testing
-coming soon
+----
