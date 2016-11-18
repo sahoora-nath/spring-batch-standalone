@@ -14,6 +14,7 @@ toc::[]
 * Use of StAX Reader to a read block of XML file and process the data and inserting into mySQL DB.
 * This is useful while processing large XML files.
 * The commit interval and failure scenario can be handled with the leverage of spring batch.
+* implementing skip-listener to write invalid records to a XMLfile.
 
 == Overview
 
